@@ -1,3 +1,7 @@
+<div align=center>
+     <img src="/git_img/狂暴扫地机器人.gif" width="150" height="150">
+</div>
+
 # QQBot-Alice  
 ## 基于gocq的qqbot [go-cq](https://docs.go-cqhttp.org)
      gocq相关api及文件请移步go-cq文件夹  
