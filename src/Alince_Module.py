@@ -105,44 +105,27 @@ class Detach_Message():
                 dict_receive_group_1['sender_msg_id'] = str(sender_msg_id)
                 dict_receive_group_1['sender_group_id'] = str(sender_group_id)
                 dict_receive_group_1['sender_self_id'] = str(sender_self_id)
- 
-                pass
             else:
                 dict_receive_private['sender_msg'] = sender_msg
                 dict_receive_private['sender_name'] = sender_name
                 dict_receive_private['sender_id'] = str(sender_id)
                 dict_receive_private['sender_msg_id'] = str(sender_msg_id)
                 dict_receive_private['sender_self_id'] = str(sender_self_id)
-                pass
         else:
             pass
  
         return None
 
 class Send_operation():  # 可视化获取的消息类别等
+
     def Send_operation_first(self):
         # 输出获取到的消息
         if dict_receive_group_1['message_type'] == 'private':
-            print(
-                '>>>:' * 3 + "获取:  \n" + "名字:  " + dict_receive_group_1['sender_name'] + '\n' + 'QQ号:  ' + dict_receive_group_1[
-                    'sender_id'] + '\n' + "消息内容:  " +
-                dict_receive_group_1[
-                    'sender_msg'] + '\n' + '消息ID：' + dict_receive_group_1['sender_msg_id'])
-            # Clear_Dictionary().clear_() #清除字典中的数据
-            pass
- 
+            print('>>>:' * 3 + "获取:  \n" + "名字:  " + dict_receive_group_1['sender_name'] + '\n' + 'QQ号:  ' + dict_receive_group_1['sender_id'] + '\n' + "消息内容:  " + dict_receive_group_1['sender_msg'] + '\n' + '消息ID：' + dict_receive_group_1['sender_msg_id'])
         elif dict_receive_group_1['message_type'] == 'group':
-            print(
-                '>>>:' * 3 + "获取:  \n" + "名字:  " + dict_receive_group_1['sender_name'] + '\n' + 'QQ号:  ' + dict_receive_group_1[
-                    'sender_id'] + '\n' + '群号:  ' + dict_receive_group_1['sender_group_id'] + '\n' + "消息内容:  " +
-                dict_receive_group_1[
-                    'sender_msg'] + '\n' + '消息ID: ' + dict_receive_group_1['sender_msg_id'])
-            # Clear_Dictionary().clear_()#清除字典中的数据
-            pass
- 
+            print('>>>:' * 3 + "获取:  \n" + "名字:  " + dict_receive_group_1['sender_name'] + '\n' + 'QQ号:  ' + dict_receive_group_1['sender_id'] + '\n' + '群号:  ' + dict_receive_group_1['sender_group_id'] + '\n' + "消息内容:  " + dict_receive_group_1['sender_msg'] + '\n' + '消息ID: ' + dict_receive_group_1['sender_msg_id'])
         else:
             pass
-            # print('>>>:' * 3 +'暂无消息')
         return None
  
     def Send_operation_second(self, msg, *age):  # 进行回复
@@ -152,17 +135,11 @@ class Send_operation():  # 可视化获取的消息类别等
             urls = "http://127.0.0.1:5700/send_private_msg?user_id=" + str(msg['user_id']) + '&message=' + msg['message']
             answer_post_use = requests.post(url=urls).json()  # 发送消息
             print('>>>:' * 3 + "已回答:" + "\n " + msg['message'],flush=True)
-            pass
         elif msg['message_type'] == 'group':
- 
             urls = 'http://127.0.0.1:5700/send_group_msg?group_id=' + str(msg['group_id']) + '&message=' + msg['message']
-            # print(urls)
             answer_post_use = requests.post(url=urls)  # 发送消息
             print('>>>:' * 3 + "\n" + "已回答:" + msg['message'],flush=True)
-            pass
- 
         else:
-            # print(1)
             pass
  
 

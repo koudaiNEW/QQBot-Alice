@@ -1,6 +1,5 @@
 ﻿import string
 
-
 # BA角色字典
 BA_Role_Message = {
     # 角色攻略
