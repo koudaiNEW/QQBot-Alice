@@ -32,7 +32,7 @@ def Thread_Management():
 
     #复读
     try:
-        if (new_msg in last_msg) and (last_msg in new_msg):
+        if new_msg in last_msg and last_msg in new_msg:
             try:
                 last_msg = 'last_msg' 
                 new_msg = 'new_msg'
