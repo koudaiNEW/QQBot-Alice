@@ -343,70 +343,111 @@ BA_Activity_Message = {
 class Blue_Archives():
     # 处理BA消息
 
+    #轮询字典
+    def Dict_polling(self, input_dict, msg):
+        try:
+            for userkey in input_dict.keys():
+                if userkey in msg:
+                    return input_dict[userkey]
+        except:
+            print('通用字典查询错误',flush=True)
+        return None
+
+
     #角色
     def BA_Role(self, msg):
         try:
-            effective_information = '[CQ:image,file=BA攻略_' + BA_Role_Message[msg['msg']] + '.png]'
-            msg['state'] = 'RESOLVED'  # 用于结束整个解析
-            return effective_information
+            msg_value = Blue_Archives().Dict_polling(BA_Role_Message, msg['msg'])  #轮询角色字典，下同
+            if msg_value == None :
+                print('非BA角色查询信息',flush=True)
+                return None
+            else:
+                effective_information = '[CQ:image,file=BA攻略_' + msg_value + '.png]'
+                return effective_information
         except:
-            print('非BA角色查询信息',flush=True)
             return None
 
     #地图
     def BA_Map(self, msg):
         try:
-            effective_information = '[CQ:image,file=BA攻略_MAP_' + BA_Map_Message[msg['msg']] + '.png]'
-            msg['state'] = 'RESOLVED'  # 用于结束整个解析
-            return effective_information
+            msg_value = Blue_Archives().Dict_polling(BA_Map_Message, msg['msg']) 
+            if msg_value == None :
+                print('非BA地图查询信息',flush=True)
+                return None
+            else:
+                effective_information = '[CQ:image,file=BA攻略_MAP_' + msg_value + '.png]'
+                return effective_information
         except:
-            print('非BA地图查询信息',flush=True)
             return None
 
     #总力战与考试
     def BA_TBattle(self, msg):
         try:
-            effective_information = '[CQ:image,file=BA攻略_TB_' + BA_TBattle_Message[msg['msg']] + '.png]'
-            msg['state'] = 'RESOLVED'  # 用于结束整个解析
-            return effective_information
+            msg_value = Blue_Archives().Dict_polling(BA_TBattle_Message, msg['msg']) 
+            if msg_value == None :
+                print('非BA总力查询信息',flush=True)
+                return None
+            else:
+                effective_information = '[CQ:image,file=BA攻略_TB_' + msg_value + '.png]'
+                return effective_information
         except:
-            print('非BA总力及考试查询信息',flush=True)
             return None
 
     #活动
     def BA_Activity(self, msg):
         try:
-            effective_information = '[CQ:image,file=BA攻略_AT_' + BA_Activity_Message[msg['msg']] + '.png]'
-            msg['state'] = 'RESOLVED'  # 用于结束整个解析
-            return effective_information
+            msg_value = Blue_Archives().Dict_polling(BA_Activity_Message, msg['msg']) 
+            if msg_value == None :
+                print('非BA活动查询信息',flush=True)
+                return None
+            else:
+                effective_information = '[CQ:image,file=BA攻略_AT_' + msg_value + '.png]'
+                return effective_information
         except:
-            print('非BA活动查询信息',flush=True)
             return None
 
 
     #整体解析
     def BA_analysis(self, msg):
-        if '/BA攻略' in msg['message']:
-            Role_Or_Strategy = {
-                'msg':str(msg['message'])[6:],
-                'state':'unresolved'
-                }
-            try:
-                msg['raw_message'] = msg['message'] = Blue_Archives().BA_Role(Role_Or_Strategy)  #角色
-                if Role_Or_Strategy['state'] == 'RESOLVED':
-                    return None
-                msg['raw_message'] = msg['message'] = Blue_Archives().BA_Map(Role_Or_Strategy)  #地图
-                if Role_Or_Strategy['state'] == 'RESOLVED':
-                    return None
-                msg['raw_message'] = msg['message'] = Blue_Archives().BA_TBattle(Role_Or_Strategy)  #总力战
-                if Role_Or_Strategy['state'] == 'RESOLVED':
-                    return None
-                msg['raw_message'] = msg['message'] = Blue_Archives().BA_Activity(Role_Or_Strategy)  #活动
-                if Role_Or_Strategy['state'] == 'RESOLVED':
-                    return None
+        Role_Or_Strategy = {
+            'msg':str(msg['message']),
+            'state':'unresolved'
+            }
+        try:
+            push_information = Blue_Archives().BA_Role(Role_Or_Strategy)  #角色
+            if push_information == None :
+                pass
+            else :
+                msg['raw_message'] = msg['message'] = push_information
+                return True
+            
+            push_information = Blue_Archives().BA_Map(Role_Or_Strategy)  #地图
+            if push_information == None :
+                pass
+            else :
+                msg['raw_message'] = msg['message'] = push_information
+                return True
 
-            except:
-                print('非BA有效信息',flush=True)
+            push_information = Blue_Archives().BA_TBattle(Role_Or_Strategy)  #总力战
+            if push_information == None :
+                pass
+            else :
+                msg['raw_message'] = msg['message'] = push_information
+                return True
+
+            push_information = Blue_Archives().BA_Activity(Role_Or_Strategy)  #活动
+            if push_information == None :
+                pass
+            else :
+                msg['raw_message'] = msg['message'] = push_information
+                return True
+
+            #无效信息
+            return False
+
+        except:
+            print('BA信息解析错误',flush=True)
+            return False
 
 
 
