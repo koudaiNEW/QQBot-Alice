@@ -5,6 +5,9 @@
 # QQBot-Alice  
 ## 基于gocq的qqbot [go-cq](https://docs.go-cqhttp.org)
      gocq相关api及文件请移步go-cq文件夹  
+
+## 复读机模块
+     字面意思
      
 ## BA模块
     BA模块主要回复形式为图片  
