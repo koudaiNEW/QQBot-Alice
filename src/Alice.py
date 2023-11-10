@@ -1,11 +1,13 @@
-﻿import Alince_Module
+﻿from ast import Name
+from typing import Self
+import Alince_Module
 import string
 import Alince_BA
 import threading
+import Alince_Anime
+import time
 
 Reply_threadingLock = threading.Lock()  #回复用线程锁
-
-
 
 #线程马内甲！
 def Thread_Management():
@@ -73,9 +75,39 @@ def Alice_BA_Go(**msg):
         print('Error port 2, BA消息解析错误',flush=True)
 
 
+#Anime模块线程
+def Alince_Anime_Go():
+    Anime_msg = {
+        'message_type':'group',
+        }
+    Alince_Anime.Anime_Analysis.Anime_Flash_Anime_Dict(Self)  #爬取信息
+    while True:
+        try:
+            Alince_Anime.Anime_Analysis.Anime_Main  #时间轮询
+        except:
+            print('Anime线程错误 1', flush=True)
+        #推送
+        try:
+            for name in Alince_Anime.title:
+                if Alince_Anime.Anime[name]['ready_To_Push'] == 1 and Alince_Anime.Anime[name]['push_Flag'] == 0:
+                    Anime_msg['group_id'] = 0  #群号
+                    Anime_msg['message'] = '番剧更新\n[CQ:image,file=' + Alince_Anime.Anime[name]['image'] +'\n\n'+ name +'\n\n版权方：\n'  #推送格式
+                    for push_Addr in Alince_Anime.Anime[name]['copyright']:
+                        Anime_msg['message'] = Anime_msg['message'] + push_Addr +'\n'
+                    Reply_threadingLock.acquire(timeout=60) #拿锁
+                    Alince_Module.Send_operation().Send_operation_second(Anime_msg)  # 发送信息
+                    Reply_threadingLock.release()  #释放锁
+                    Alince_Anime.Anime[name]['push_Flag'] = 1
+        except:
+            print('Anime线程错误 2', flush=True)
+        time.sleep(60)  #一分钟轮询
+
+
 
 
 if __name__ == '__main__':
+    Anime_thread = threading.Thread(target=Alince_Anime_Go)  #Anime线程
+    Anime_thread.start()
     while True:
         try:
             Thread_Management()

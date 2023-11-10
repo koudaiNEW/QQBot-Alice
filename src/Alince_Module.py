@@ -143,7 +143,7 @@ class Send_operation():  # 可视化获取的消息类别等
             pass
  
 
-class Clear_Dictionary():  # 清除字典中的数据，后面有许多的地方需要清空字典
+class Clear_Dictionary():  
     def clear_(self):
         dict_receive_group_1['sender_msg'] = ''
         dict_receive_group_1['sender_name'] = ''
