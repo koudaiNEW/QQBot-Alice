@@ -121,9 +121,9 @@ class Send_operation():  # 可视化获取的消息类别等
     def Send_operation_first(self):
         # 输出获取到的消息
         if dict_receive_group_1['message_type'] == 'private':
-            print('>>>:' * 3 + "获取:  \n" + "名字:  " + dict_receive_group_1['sender_name'] + '\n' + 'QQ号:  ' + dict_receive_group_1['sender_id'] + '\n' + "消息内容:  " + dict_receive_group_1['sender_msg'] + '\n' + '消息ID：' + dict_receive_group_1['sender_msg_id'])
+            print(str(time.time()) + "；\n" + "名字:  " + dict_receive_group_1['sender_name'] + '\n' + 'QQ号:  ' + dict_receive_group_1['sender_id'] + '\n' + "消息内容:  " + dict_receive_group_1['sender_msg'] + '\n' + '消息ID：' + dict_receive_group_1['sender_msg_id'])
         elif dict_receive_group_1['message_type'] == 'group':
-            print('>>>:' * 3 + "获取:  \n" + "名字:  " + dict_receive_group_1['sender_name'] + '\n' + 'QQ号:  ' + dict_receive_group_1['sender_id'] + '\n' + '群号:  ' + dict_receive_group_1['sender_group_id'] + '\n' + "消息内容:  " + dict_receive_group_1['sender_msg'] + '\n' + '消息ID: ' + dict_receive_group_1['sender_msg_id'])
+            print(str(time.time()) + "；\n" + "名字:  " + dict_receive_group_1['sender_name'] + '\n' + 'QQ号:  ' + dict_receive_group_1['sender_id'] + '\n' + '群号:  ' + dict_receive_group_1['sender_group_id'] + '\n' + "消息内容:  " + dict_receive_group_1['sender_msg'] + '\n' + '消息ID: ' + dict_receive_group_1['sender_msg_id'])
         else:
             pass
         return None
@@ -134,11 +134,11 @@ class Send_operation():  # 可视化获取的消息类别等
         if msg['message_type'] == 'private':
             urls = "http://127.0.0.1:5700/send_private_msg?user_id=" + str(msg['user_id']) + '&message=' + msg['message']
             answer_post_use = requests.post(url=urls).json()  # 发送消息
-            print('>>>:' * 3 + "已回答:" + "\n " + msg['message'],flush=True)
+            print(time.strftime("%Y-%m-%d %H:%M:%S") + ' return:\n ' + msg['message'],flush=True)
         elif msg['message_type'] == 'group':
             urls = 'http://127.0.0.1:5700/send_group_msg?group_id=' + str(msg['group_id']) + '&message=' + msg['message']
             answer_post_use = requests.post(url=urls)  # 发送消息
-            print('>>>:' * 3 + "\n" + "已回答:" + msg['message'],flush=True)
+            print(time.strftime("%Y-%m-%d %H:%M:%S") + ' return:\n ' + msg['message'],flush=True)
         else:
             pass
  

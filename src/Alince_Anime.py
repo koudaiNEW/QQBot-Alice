@@ -22,7 +22,7 @@ class Anime_Analysis():
         url = 'https://yuc.wiki/202310/'  #根据季度变化
         tree = etree.HTML(requests.get(url=url, headers=headers).text.replace('<br>', ''))  #去掉br换行符
         #爬取番剧列表
-        title = tree.xpath("//article[@class='post-block']//div[@style='float:left']//td[@class='date_title_' or @class='date_title']/text()")
+        title = tree.xpath("//article[@class='post-block']//div[@style='float:left']//td[@class='date_title_' or @class='date_title' or @class='date_title__']/text()")
         #更新番剧字典
         Anime = {} 
         for name in title:
@@ -43,7 +43,7 @@ class Anime_Analysis():
                  minn = int(Anime[name]['time'][1].split(':')[1])
                  #搓个轮子
                  if hour > 23 :
-                     hour = 0
+                     hour -= 24
                      day += 1
                      if mon == 2:
                          if day > 29:
@@ -102,3 +102,6 @@ class Anime_Analysis():
 
 
 
+
+
+stop = 1

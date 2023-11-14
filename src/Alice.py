@@ -1,6 +1,4 @@
-﻿from ast import Name
-from typing import Self
-import Alince_Module
+﻿import Alince_Module
 import string
 import Alince_BA
 import threading
@@ -16,7 +14,7 @@ def Thread_Management():
     try:
         raw_msg = Alince_Module.Listener().Preprocessing_segment(Alince_Module.Listener().receiver())  # 解码消息
         Alince_Module.Detach_Message().Other_separation(raw_msg)   # 细分解码消息
-        print(raw_msg,flush=True)
+        print(time.strftime("%Y-%m-%d %H:%M:%S") + str(raw_msg),flush=True)
         new_msg = raw_msg['message']  # 保存原收到信息
     except:
         print('Error port 4, 解码错误',flush=True)
@@ -80,24 +78,25 @@ def Alince_Anime_Go():
     Anime_msg = {
         'message_type':'group',
         }
-    Alince_Anime.Anime_Analysis.Anime_Flash_Anime_Dict(Self)  #爬取信息
+    Alince_Anime.Anime_Analysis.Anime_Flash_Anime_Dict(1)  #爬取信息
     while True:
         try:
-            Alince_Anime.Anime_Analysis.Anime_Main  #时间轮询
+            Alince_Anime.Anime_Analysis.Anime_Main(1)  #时间轮询
         except:
             print('Anime线程错误 1', flush=True)
         #推送
         try:
             for name in Alince_Anime.title:
                 if Alince_Anime.Anime[name]['ready_To_Push'] == 1 and Alince_Anime.Anime[name]['push_Flag'] == 0:
-                    Anime_msg['group_id'] = 0  #群号
-                    Anime_msg['message'] = '番剧更新\n[CQ:image,file=' + Alince_Anime.Anime[name]['image'] +'\n\n'+ name +'\n\n版权方：\n'  #推送格式
+                    Anime_msg['group_id'] = 521609770  #群号
+                    Anime_msg['message'] = '番剧更新\n[CQ:image,file=' + Alince_Anime.Anime[name]['image'][0] +']\n\n'+ name +'\n\n版权方：\n'  #推送格式
                     for push_Addr in Alince_Anime.Anime[name]['copyright']:
                         Anime_msg['message'] = Anime_msg['message'] + push_Addr +'\n'
                     Reply_threadingLock.acquire(timeout=60) #拿锁
                     Alince_Module.Send_operation().Send_operation_second(Anime_msg)  # 发送信息
                     Reply_threadingLock.release()  #释放锁
                     Alince_Anime.Anime[name]['push_Flag'] = 1
+                    time.sleep(1.5)  
         except:
             print('Anime线程错误 2', flush=True)
         time.sleep(60)  #一分钟轮询
